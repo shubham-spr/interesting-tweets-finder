@@ -6,8 +6,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 @SpringBootApplication
+@EnableElasticsearchRepositories(basePackages = "com.listener.interestingtweetsfinder")
 public class InterestingTweetsFinderApplication {
 
 	public static void main(String[] args) {
@@ -15,12 +17,13 @@ public class InterestingTweetsFinderApplication {
 	}
 
 	public void addToRegex(RegexRepository regexRepository){
-		regexRepository.save(new Regex ("regex-001",".*[\\p{IsHan}]+.*","Contains Chinese/Japanese Text",false));
-		regexRepository.save(new Regex ("regex-002",".*(donald|trump|potus|realDonaldTrump).*",
+		regexRepository.save(new Regex ("regex-chinese",".*[\\p{IsHan}]+.*","Contains Chinese/Japanese Text",false));
+		regexRepository.save(new Regex ("regex-donald",".*(donald|trump|potus|realDonaldTrump).*",
 				"Contains mention of donald trump",false));
-		regexRepository.save(new Regex ("regex-003",".*(#sprinklr|@Sprinklr|#sprinklrlife).*","A Tweet for Sprinklr",
+		regexRepository.save(new Regex ("regex-sprinklr",".*(#sprinklr|@Sprinklr|#sprinklrlife).*","A Tweet for " +
+				"Sprinklr",
 				false));
-		regexRepository.save(new Regex ("regex-004","RT .*","A Retweeted Tweet",false));
+		regexRepository.save(new Regex ("regex-referenced","RT .*","A Retweeted Tweet",false));
 	}
 
 	@Bean

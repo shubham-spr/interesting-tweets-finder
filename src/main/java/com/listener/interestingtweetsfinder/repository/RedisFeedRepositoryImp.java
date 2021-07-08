@@ -2,7 +2,6 @@ package com.listener.interestingtweetsfinder.repository;
 
 import com.listener.interestingtweetsfinder.RedisSchema;
 import com.listener.interestingtweetsfinder.model.ReferencedTweet;
-import com.listener.interestingtweetsfinder.model.StreamElement;
 import com.listener.interestingtweetsfinder.model.Tweet;
 import com.listener.interestingtweetsfinder.service.PatternMatchingService;
 import org.springframework.stereotype.Repository;
@@ -87,7 +86,7 @@ public class RedisFeedRepositoryImp implements RedisFeedRepository {
     public boolean isChildOfInteresting(Tweet tweet) {
         String globalInterestingSetKey = RedisSchema.getInterestingHashKey ();
         try(Jedis jedis = jedisPool.getResource ()){
-            List<ReferencedTweet> referencedTweets = tweet.getReferenced_tweets ();
+            List<ReferencedTweet> referencedTweets = tweet.getReferencedTweets ();
             if(referencedTweets!=null){
                 return jedis.sismember (globalInterestingSetKey,referencedTweets.get (0).getId ());
             }

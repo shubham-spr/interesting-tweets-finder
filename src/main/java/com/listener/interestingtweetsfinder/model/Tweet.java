@@ -1,18 +1,27 @@
 package com.listener.interestingtweetsfinder.model;
 
-import ch.qos.logback.core.joran.spi.DefaultClass;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Document
+@Document (indexName = "tweets")
 public class Tweet {
 
+    @Id
     private String id;
-    private String conversation_id;
-    private List<ReferencedTweet> referenced_tweets;
+
+    @JsonProperty("conversation_id")
+    private String conversationId;
+
+    @JsonProperty("referenced_tweets")
+    private List<ReferencedTweet> referencedTweets;
+
     private String text;
 
     public Tweet(){}
@@ -25,20 +34,20 @@ public class Tweet {
         this.id = id;
     }
 
-    public String getConversation_id() {
-        return conversation_id;
+    public String getConversationId() {
+        return conversationId;
     }
 
-    public void setConversation_id(String conversation_id) {
-        this.conversation_id = conversation_id;
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
     }
 
-    public List<ReferencedTweet> getReferenced_tweets() {
-        return referenced_tweets;
+    public List<ReferencedTweet> getReferencedTweets() {
+        return referencedTweets;
     }
 
-    public void setReferenced_tweets(List<ReferencedTweet> referenced_tweets) {
-        this.referenced_tweets = referenced_tweets;
+    public void setReferencedTweets(List<ReferencedTweet> referencedTweets) {
+        this.referencedTweets = referencedTweets;
     }
 
     public String getText() {
@@ -52,7 +61,7 @@ public class Tweet {
     public Map<String,String> toMap(){
         Map<String,String> newMap = new HashMap<> ();
         newMap.put ("id",id);
-        newMap.put ("conversation_id",conversation_id);
+        newMap.put ("conversationId", conversationId);
         newMap.put ("text",text);
         return newMap;
     }

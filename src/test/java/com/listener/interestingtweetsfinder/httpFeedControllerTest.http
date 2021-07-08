@@ -1,0 +1,19 @@
+GET http://localhost:8080/api/recent?limit=5
+Accept: application/json
+
+###
+
+GET http://localhost:8080/api/recent/regex-001?limit=5
+Accept: application/json
+
+###
+
+GET http://localhost:8080/api/tweet/1413044794058809344
+Accept: application/json
+
+###
+
+GET http://localhost:8080/api/conversation/1413044789851791360
+Accept: application/json
+
+###

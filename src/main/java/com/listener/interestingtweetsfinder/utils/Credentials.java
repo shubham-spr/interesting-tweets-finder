@@ -8,6 +8,9 @@ public enum Credentials {
     MONGODB_PASSWORD,
     MONGODB_HOST,
     MONGODB_PORT,
-    MONGODB_DATABASE_NAME
+    MONGODB_DATABASE_NAME,
+
+    ES_PASSWORD,
+    ES_USER_NAME
 
 }

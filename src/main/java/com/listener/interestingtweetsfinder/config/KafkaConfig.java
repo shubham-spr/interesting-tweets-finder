@@ -24,9 +24,6 @@ public class KafkaConfig {
     @Value ("${spring.kafka.producer.bootstrap-servers}")
     private String producerAddress;
 
-    @Value ("${spring.kafka.consumer.group-id}")
-    private String consumerGroup;
-
     @Value ("${general.kafka.topic}")
     private String topic;
 
@@ -56,7 +53,6 @@ public class KafkaConfig {
     public ConsumerFactory<String,String> consumerFactory(){
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, consumerAddress);
-        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroup);
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         return new DefaultKafkaConsumerFactory<> (configProps);

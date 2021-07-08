@@ -11,6 +11,7 @@ import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -56,6 +57,18 @@ public class PatternMatchingService {
             }
         }
         return matches;
+    }
+
+    public boolean isInteresting(String text){
+        for(Map.Entry<String,Pattern> entry: regexPatternMap.entrySet ()){
+            if(entry.getValue ().matcher (text).matches ())
+                return true;
+        }
+        return false;
+    }
+
+    public Set<String> getInterestingReasonIds(){
+        return regexPatternMap.keySet ();
     }
 
     @PreDestroy

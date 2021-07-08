@@ -1,8 +1,8 @@
 package com.listener.interestingtweetsfinder;
 
 import com.listener.interestingtweetsfinder.service.KafkaTweetProducer;
-import com.listener.interestingtweetsfinder.utility.CredentialManager;
-import com.listener.interestingtweetsfinder.utility.Credentials;
+import com.listener.interestingtweetsfinder.utils.CredentialManager;
+import com.listener.interestingtweetsfinder.utils.Credentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;

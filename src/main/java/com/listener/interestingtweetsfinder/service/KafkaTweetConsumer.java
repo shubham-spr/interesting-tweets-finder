@@ -2,7 +2,8 @@ package com.listener.interestingtweetsfinder.service;
 
 import com.listener.interestingtweetsfinder.model.StreamElement;
 import com.listener.interestingtweetsfinder.model.Tweet;
-import com.listener.interestingtweetsfinder.repository.TweetRepository;
+import com.listener.interestingtweetsfinder.repository.RedisFeedRepository;
+import com.listener.interestingtweetsfinder.repository.RedisFeedRepositoryImp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -16,29 +17,40 @@ public class KafkaTweetConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger (KafkaTweetConsumer.class);
 
-    private final TweetRepository tweetRepository;
     private final PatternMatchingService patternMatchingService;
+    private final RedisFeedRepository redisFeedRepository;
 
-    public KafkaTweetConsumer(TweetRepository repository, PatternMatchingService patternMatchingService){
-        this.tweetRepository=repository;
+    public KafkaTweetConsumer(RedisFeedRepositoryImp repository, PatternMatchingService patternMatchingService){
+        this.redisFeedRepository =repository;
         this.patternMatchingService=patternMatchingService;
     }
 
-    //    @RetryableTopic(attempts = "2", backoff = @Backoff(delay = 2000, maxDelay = 10000, multiplier = 2))
-    @KafkaListener(topics = "${general.kafka.topic}", concurrency = "${general.kafka.consumer_group_size}",groupId = "${spring.kafka.consumer.group-id}")
-    public void consume(String message) {
-        // logger.info ("received {}",message);
+    @KafkaListener(topics = "${general.kafka.topic}",
+            concurrency = "${general.kafka.mongo_consumers.size}",
+            groupId = "${general.kafka.mongo_consumers.group_id}")
+    public void consumeIfInteresting(String message) {
         Optional<StreamElement> optional = StreamElement.fromString (message);
         if(optional.isEmpty ()) return;
         StreamElement element = optional.get ();
         Tweet tweet= element.getData ();
-        tweetRepository.save (tweet);
-        List<String> matchIds = patternMatchingService.findMatchingRegexIdsForText (tweet.getText ());
-        if(matchIds.size ()>0) {
-            logger.info ("For "+matchIds+" : "+tweet.getText ());
+        List<String> reason = patternMatchingService.findMatchingRegexIdsForText (tweet.getText ());
+        if(reason.size ()>0) redisFeedRepository.addInterestingTweet (tweet,reason);
+    }
+
+    @KafkaListener(topics = "${general.kafka.topic}",
+            concurrency = "${general.kafka.redis_consumers.size}",
+            groupId = "${general.kafka.redis_consumers.group_id}")
+    public void consumeIfInterestingParent(String message) {
+        Optional<StreamElement> optional = StreamElement.fromString (message);
+        if(optional.isEmpty ()) return;
+        StreamElement element = optional.get ();
+        Tweet tweet= element.getData ();
+        if(redisFeedRepository.isChildOfInteresting (tweet)){
+            logger.info (tweet.getText ()+ " has parent tweet interesting");
         }
     }
 
+//    @RetryableTopic(attempts = "2", backoff = @Backoff(delay = 2000, maxDelay = 10000, multiplier = 2))
 //    @KafkaListener(topics = "${general.kafka.topic}", groupId = "${spring.kafka.consumer.group-id-2}")
 //    @KafkaListener(topics = "${general.kafka.topic}", groupId = "${spring.kafka.consumer.group-id-2}")
 //    public void consume(String message) {

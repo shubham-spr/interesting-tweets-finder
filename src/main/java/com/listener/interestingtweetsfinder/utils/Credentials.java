@@ -1,4 +1,4 @@
-package com.listener.interestingtweetsfinder.utility;
+package com.listener.interestingtweetsfinder.utils;
 
 public enum Credentials {
 

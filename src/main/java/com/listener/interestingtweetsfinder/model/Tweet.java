@@ -3,7 +3,9 @@ package com.listener.interestingtweetsfinder.model;
 import ch.qos.logback.core.joran.spi.DefaultClass;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Document
 public class Tweet {
@@ -46,4 +48,13 @@ public class Tweet {
     public void setText(String text) {
         this.text = text;
     }
+
+    public Map<String,String> toMap(){
+        Map<String,String> newMap = new HashMap<> ();
+        newMap.put ("id",id);
+        newMap.put ("conversation_id",conversation_id);
+        newMap.put ("text",text);
+        return newMap;
+    }
+
 }

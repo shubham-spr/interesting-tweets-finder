@@ -1,5 +1,6 @@
 package com.listener.interestingtweetsfinder.service;
 
+import com.listener.interestingtweetsfinder.model.StreamElement;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,17 +28,12 @@ public class KafkaTweetProducer {
     public void sendMessage(String message) {
         ListenableFuture<SendResult<String, String>> future = this.kafkaTemplate.send(topic, message);
         future.addCallback(new ListenableFutureCallback<> () {
-
             @Override
             public void onFailure(@NotNull Throwable ex) {
                 logger.info("Unable to send message=[ {} ] due to : {}", message, ex.getMessage());
             }
-
             @Override
-            public void onSuccess(SendResult<String, String> result) {
-                logger.info("Sent message=[ {} ] with offset=[ {} ]", message, result.getRecordMetadata().offset());
-            }
-
+            public void onSuccess(SendResult<String, String> result) {}
         });
     }
 

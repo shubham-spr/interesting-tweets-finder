@@ -1,4 +1,4 @@
-package com.listener.interestingtweetsfinder.system;
+package com.listener.interestingtweetsfinder.utility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +23,11 @@ public class CredentialManager {
         try{
             properties.load(new BufferedInputStream (new FileInputStream (CREDENTIALS_FILE_PATH)));
         } catch (IOException e) {
-            logger.info ("Not able to load the credentials file: "+ CREDENTIALS_FILE_PATH);
+            logger.error ("Not able to load the credentials file: "+ CREDENTIALS_FILE_PATH);
         }
         for(Credentials credentials: Credentials.values ()){
             if(get(credentials)==null) {
-                logger.info ("Not able to get property "+ credentials +" from "+CREDENTIALS_FILE_PATH);
+                logger.error ("Not able to get property "+ credentials +" from "+CREDENTIALS_FILE_PATH);
             }
         }
     }

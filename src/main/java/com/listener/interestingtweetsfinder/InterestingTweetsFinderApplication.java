@@ -14,10 +14,19 @@ public class InterestingTweetsFinderApplication {
 		SpringApplication.run(InterestingTweetsFinderApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner commandLineRunner(RegexRepository regexRepository) {
-		return (args) -> {
-		};
+	public void addToRegex(RegexRepository regexRepository){
+		regexRepository.save(new Regex ("regex-001",".*[\\p{IsHan}]+.*","Contains Chinese/Japanese Text",false));
+		regexRepository.save(new Regex ("regex-002",".*(donald|trump|potus|realDonaldTrump).*",
+				"Contains mention of donald trump",false));
+		regexRepository.save(new Regex ("regex-003",".*(#sprinklr|@Sprinklr|#sprinklrlife).*","A Tweet for Sprinklr",
+				false));
+		regexRepository.save(new Regex ("regex-004","RT .*","A Retweeted Tweet",false));
 	}
 
+	@Bean
+	public CommandLineRunner commandLineRunner(RegexRepository regexRepository){
+		return (args)-> {
+			// addToRegex (regexRepository);
+		};
+	}
 }

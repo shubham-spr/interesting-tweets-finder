@@ -1,7 +1,7 @@
 package com.listener.interestingtweetsfinder.config;
 
-import com.listener.interestingtweetsfinder.system.CredentialManager;
-import com.listener.interestingtweetsfinder.system.Credentials;
+import com.listener.interestingtweetsfinder.utility.CredentialManager;
+import com.listener.interestingtweetsfinder.utility.Credentials;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;

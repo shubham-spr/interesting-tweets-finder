@@ -11,6 +11,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.*;
+import org.springframework.retry.backoff.ExponentialBackOffPolicy;
+import org.springframework.retry.backoff.FixedBackOffPolicy;
+import org.springframework.retry.policy.SimpleRetryPolicy;
+import org.springframework.retry.support.RetryTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +66,24 @@ public class KafkaConfig {
     public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
+        factory.setRetryTemplate (retryTemplate ());
         return factory;
     }
 
+    @Bean
+    public RetryTemplate retryTemplate(){
+        RetryTemplate retryTemplate = new RetryTemplate ();
+
+        ExponentialBackOffPolicy exponentialBackOffPolicy = new ExponentialBackOffPolicy ();
+        exponentialBackOffPolicy.setInitialInterval (2000);
+        exponentialBackOffPolicy.setMultiplier (2);
+        exponentialBackOffPolicy.setMaxInterval (20000);
+        retryTemplate.setBackOffPolicy (exponentialBackOffPolicy);
+
+        SimpleRetryPolicy simpleRetryPolicy= new SimpleRetryPolicy ();
+        simpleRetryPolicy.setMaxAttempts (3);
+        retryTemplate.setRetryPolicy (simpleRetryPolicy);
+
+        return retryTemplate;
+    }
 }

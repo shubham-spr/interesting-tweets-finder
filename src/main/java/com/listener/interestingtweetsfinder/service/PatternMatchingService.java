@@ -1,6 +1,6 @@
 package com.listener.interestingtweetsfinder.service;
 
-import com.listener.interestingtweetsfinder.PatternUpdateRunnable;
+import com.listener.interestingtweetsfinder.PatternUpdateScheduler;
 import com.listener.interestingtweetsfinder.model.Regex;
 import com.listener.interestingtweetsfinder.repository.RegexRepository;
 import org.slf4j.Logger;
@@ -18,6 +18,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+/**
+ * A Service that will fetch the list of regex patterns from mongo repository
+ * and match it against all the tweets consumed.
+ *
+ * For avoiding recompilation of pattern objects. A concurrent hashmap is used
+ * which is updated after every few seconds (5 secs here) by a {@link PatternUpdateScheduler}
+ */
 @Service
 public class PatternMatchingService {
 
@@ -31,7 +38,7 @@ public class PatternMatchingService {
         this.regexRepository=regexRepository;
         regexPatternMap=new ConcurrentHashMap<> ();
         for(Regex regex : regexRepository.findAll ()){
-            if(regex.getCaseSensitivity ())
+            if(regex.getCaseSensitive ())
                 regexPatternMap.put (regex.getId (),Pattern.compile (regex.getExpression ()));
             else
                 regexPatternMap.put (regex.getId (),Pattern.compile (regex.getExpression (),Pattern.CASE_INSENSITIVE));
@@ -42,7 +49,7 @@ public class PatternMatchingService {
     }
 
     private void startUpdateScheduler(){
-        scheduledExecutorService.scheduleWithFixedDelay (new PatternUpdateRunnable (regexPatternMap,regexRepository),
+        scheduledExecutorService.scheduleWithFixedDelay (new PatternUpdateScheduler (regexPatternMap,regexRepository),
                 5,
                 5,
                 TimeUnit.SECONDS

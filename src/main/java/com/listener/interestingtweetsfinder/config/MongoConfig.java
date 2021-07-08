@@ -34,7 +34,6 @@ public class MongoConfig {
                 credentialManager.get(Credentials.MONGODB_DATABASE_NAME),
                 max_pool_size,
                 server_selection_timeout);
-        // System.out.println("Using "+connectionString);
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(new ConnectionString(connectionString))
                 .build();

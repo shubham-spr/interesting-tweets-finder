@@ -1,22 +1,25 @@
 package com.listener.interestingtweetsfinder.model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Regex {
 
+    @Id
     private String id;
+
     private String description;
     private String expression;
-    private boolean caseSensitivity;
+    private boolean caseSensitive;
 
     public Regex(){}
 
-    public Regex(String id, String expression, String description,boolean caseSensitivity){
+    public Regex(String id, String expression, String description,boolean caseSensitive){
         this.id=id;
         this.description=description;
         this.expression=expression;
-        this.caseSensitivity=caseSensitivity;
+        this.caseSensitive = caseSensitive;
     }
 
     public String getId() { return id; }
@@ -31,12 +34,12 @@ public class Regex {
 
     public void setExpression(String expression) { this.expression = expression; }
 
-    public Boolean getCaseSensitivity() {
-        return caseSensitivity;
+    public Boolean getCaseSensitive() {
+        return caseSensitive;
     }
 
-    public void setCaseSensitivity(Boolean caseSensitivity) {
-        this.caseSensitivity = caseSensitivity;
+    public void setCaseSensitive(Boolean caseSensitive) {
+        this.caseSensitive = caseSensitive;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class Regex {
                 "id='" + id + '\'' +
                 ", description='" + description + '\'' +
                 ", expression='" + expression + '\'' +
-                ", caseSensitivity=" + caseSensitivity +
+                ", caseSensitive=" + caseSensitive +
                 '}';
     }
 }

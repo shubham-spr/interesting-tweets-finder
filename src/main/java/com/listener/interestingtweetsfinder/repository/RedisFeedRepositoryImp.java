@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import redis.clients.jedis.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Repository
@@ -15,21 +16,30 @@ public class RedisFeedRepositoryImp implements RedisFeedRepository {
 
     private static final int DEFAULT_RECENT_TWEETS = 10;
     private static final int MAX_STREAM_SIZE = 100;
+    static private final long INTERESTING_KEY_EXPIRATION_SECS =  60 * 60 * 24 * 10 * 1000; // 10 Days ms
+    private static final int DEL_KEYS_AFTER_TWEET_COUNT = 1000;
 
     private final JedisPool jedisPool;
     private final PatternMatchingService patternMatchingService;
+    private final AtomicLong counter;
 
     public RedisFeedRepositoryImp(JedisPool jedisPool, PatternMatchingService patternMatchingService){
         this.jedisPool=jedisPool;
         this.patternMatchingService=patternMatchingService;
+        counter= new AtomicLong (0);
     }
 
     @Override
     public void addInterestingTweet(Tweet tweet, List<String> reasons) {
         String globalInterestingSetKey = RedisSchema.getInterestingHashKey ();
+        long currentTime = System.currentTimeMillis ();
+        boolean checkToDel = (counter.incrementAndGet ()%DEL_KEYS_AFTER_TWEET_COUNT==0);
         try(Jedis jedis = jedisPool.getResource ()){
             Pipeline p = jedis.pipelined ();
-            p.sadd (globalInterestingSetKey, tweet.getId ());
+            p.zadd (globalInterestingSetKey, currentTime, tweet.getId());
+            if(checkToDel){
+                p.zremrangeByScore (globalInterestingSetKey,0,currentTime -  INTERESTING_KEY_EXPIRATION_SECS);
+            }
             for(String reason: reasons){
                 p.xadd (
                         RedisSchema.getInterestingHashKey (reason),
@@ -88,7 +98,8 @@ public class RedisFeedRepositoryImp implements RedisFeedRepository {
         try(Jedis jedis = jedisPool.getResource ()){
             List<ReferencedTweet> referencedTweets = tweet.getReferencedTweets ();
             if(referencedTweets!=null){
-                return jedis.sismember (globalInterestingSetKey,referencedTweets.get (0).getId ());
+                Double score = jedis.zscore(globalInterestingSetKey,referencedTweets.get (0).getId ());
+                if(score!=null) return true;
             }
         }
         return false;

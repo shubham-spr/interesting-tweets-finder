@@ -26,10 +26,6 @@ public class StreamingService {
         }
     }
 
-    public void restartService(){
-
-    }
-
     @PreDestroy
     public void stop(){
         logger.info ("Shutting down executor service");

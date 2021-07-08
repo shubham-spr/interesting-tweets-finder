@@ -17,19 +17,7 @@ public class InterestingTweetsFinderApplication {
 	}
 
 	public void addToRegex(RegexRepository regexRepository){
-		regexRepository.save(new Regex ("regex-chinese",".*[\\p{IsHan}]+.*","Contains Chinese/Japanese Text",false));
-		regexRepository.save(new Regex ("regex-donald",".*(donald|trump|potus|realDonaldTrump).*",
-				"Contains mention of donald trump",false));
-		regexRepository.save(new Regex ("regex-sprinklr",".*(#sprinklr|@Sprinklr|#sprinklrlife).*","A Tweet for " +
-				"Sprinklr",
-				false));
-		regexRepository.save(new Regex ("regex-referenced","RT .*","A Retweeted Tweet",false));
+
 	}
 
-	@Bean
-	public CommandLineRunner commandLineRunner(RegexRepository regexRepository){
-		return (args)-> {
-			// addToRegex (regexRepository);
-		};
-	}
 }

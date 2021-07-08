@@ -34,7 +34,8 @@ public class KafkaTweetConsumer {
         this.tweetRepository=tweetRepository;
     }
 
-    @KafkaListener(topics = "${general.kafka.topic}",
+    @KafkaListener(
+            topics = "${general.kafka.topic}",
             concurrency = "${general.kafka.mongo_consumers.size}",
             groupId = "${general.kafka.mongo_consumers.group_id}")
     public void consumeIfInteresting(String message) {
@@ -49,7 +50,8 @@ public class KafkaTweetConsumer {
         }
     }
 
-    @KafkaListener(topics = "${general.kafka.topic}",
+    @KafkaListener(
+            topics = "${general.kafka.topic}",
             concurrency = "${general.kafka.redis_consumers.size}",
             groupId = "${general.kafka.redis_consumers.group_id}")
     public void consumeIfInterestingParent(String message) {

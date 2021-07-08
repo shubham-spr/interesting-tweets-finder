@@ -3,7 +3,7 @@ Accept: application/json
 
 ###
 
-GET http://localhost:8080/api/recent/regex-001?limit=5
+GET http://localhost:8080/api/recent/regex-sprinklr?limit=10
 Accept: application/json
 
 ###

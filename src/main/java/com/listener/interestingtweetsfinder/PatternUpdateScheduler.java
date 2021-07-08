@@ -11,14 +11,21 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class PatternUpdateRunnable implements Runnable {
+/**
+ * A runnable that updates the patterns for a change in
+ * regex mongo repository (add or delete).
+ *
+ * Note: It does not updates if there is any change in expression of description of a regex,
+ * only regex-ids
+ */
+public class PatternUpdateScheduler implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger (PatternUpdateRunnable.class);
+    private static final Logger logger = LoggerFactory.getLogger (PatternUpdateScheduler.class);
 
     private final Map<String, Pattern> regexPatternMap;
     private final RegexRepository regexRepository;
 
-    public PatternUpdateRunnable(Map<String,Pattern> regexPatternMap, RegexRepository regexRepository) {
+    public PatternUpdateScheduler(Map<String,Pattern> regexPatternMap, RegexRepository regexRepository) {
         this.regexPatternMap=regexPatternMap;
         this.regexRepository=regexRepository;
     }

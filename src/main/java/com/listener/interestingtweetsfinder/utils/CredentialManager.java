@@ -12,9 +12,7 @@ public class CredentialManager {
 
     private static final Logger logger = LoggerFactory.getLogger (CredentialManager.class);
     private static final CredentialManager INSTANCE = new CredentialManager ();
-    private static final String CREDENTIALS_FILE_PATH = "/Users/shubham/Projects/interesting-tweets-finder/src/main" +
-            "/resources/credentials" +
-            ".properties";
+    private static final String CREDENTIALS_FILE_PATH = "src/main/resources/credentials.properties";
 
     private final Properties properties;
 

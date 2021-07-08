@@ -1,0 +1,58 @@
+---
+version: '3.8'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.2.5
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 22181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:22181
+    volumes:
+      - ../app-data/zoo-data/data:/var/lib/zookeeper/data
+      - ../app-data/zoo-data/log:/var/lib/zookeeper/log
+
+  kafka:
+    image: confluentinc/cp-kafka:5.2.5
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+      - 9092:9092
+    volumes:
+      - ../app-data/kafa-data/:/tmp/kafka-logs
+      - ../app-data/kafka-data:/var/lib/kafka/data
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:22181
+      # Kafka broker listens on localhost:9092 for access from your host machine and on kafka:29092 for access from
+      # other containers.
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+#  es01:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.2
+#    container_name: es01
+#    environment:
+##      - ELASTIC_PASSWORD: "password"
+#      - "discovery.type=single-node"
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#    volumes:
+##      - ../app-data/es-data/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+#      - ../app-data/es-data:/usr/share/elasticsearch/data/
+#    ports:
+#      - 9200:9200
+#
+#  redis:
+#    image: redis:6.2.4-alpine
+#    container_name: redis
+#    ports:
+#      - "6379:6379"
+#    volumes:
+#      - "../app-data/redis-data/:/conf"
+#      - "../app-data/redis-data/:/data"
+#    command: [ "redis-server", "/conf/redis.conf" ]

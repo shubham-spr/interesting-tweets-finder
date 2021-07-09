@@ -1,7 +1,7 @@
 # Interesting Tweets Finder
 
 ## Description
-Interesting Tweets Finder is a simple application that shows how various microservices can interact together to build a
+Interesting Tweets Finder is a simple application that shows how various microservices can interact together to build
 a big, powerful, persistent, reliable and scalable distributed system with java spring framework. 
 
 ## Technology Stack

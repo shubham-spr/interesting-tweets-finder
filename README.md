@@ -14,10 +14,8 @@ a big, powerful, persistent, reliable and scalable distributed system with java 
 
 ## Usage
 
-<code>
-  $ ./gradlew assemble  
-  
-  $ docker-compose up -d
-
-  $ java -jar build/libs/interesting-tweets-finder-0.0.1-SNAPSHOT.jar -Xms256m -server
-</code>
+```
+$ ./gradlew assemble  
+$ docker-compose up -d
+$ java -jar build/libs/interesting-tweets-finder-0.0.1-SNAPSHOT.jar -Xms256m -server
+````

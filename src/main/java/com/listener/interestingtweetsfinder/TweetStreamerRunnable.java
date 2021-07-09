@@ -18,7 +18,6 @@ import java.io.*;
 import java.net.URISyntaxException;
 
 import static java.lang.Math.max;
-import static org.apache.kafka.common.utils.Utils.formatAddress;
 import static org.apache.kafka.common.utils.Utils.min;
 
 public class TweetStreamerRunnable implements Runnable {
@@ -64,8 +63,13 @@ public class TweetStreamerRunnable implements Runnable {
         currentWaitInterval = max(currentWaitInterval,INITIAL_INTERVAL);
     }
 
+    @Override
     public void run(){
-        // sampleStream ();
+        // streamFromSample ();
+        streamFromTwitter ();
+    }
+
+    private void streamFromTwitter(){
         while (true){
             try {
                 HttpResponse response = httpClient.execute (httpGet);
@@ -75,11 +79,11 @@ public class TweetStreamerRunnable implements Runnable {
                     String line = reader.readLine ();
                     while (line != null) {
                         if (line.length()>0)
-                          producer.sendMessage (line);
+                            producer.sendMessage (line);
                         line = reader.readLine ();
                         counter++;
                         if(counter%STATS_AFTER_NUM_TWEETS==0){
-                            logger.info ("Fetched and sent "+counter+" tweets in total to producer");
+                            logger.info ("Tweet Streamer  Fetched : "+counter+" Tweets");
                         }
                         resetBackoff ();
                     }
@@ -98,7 +102,7 @@ public class TweetStreamerRunnable implements Runnable {
         }
     }
 
-    public void sampleStream(){
+    public void streamFromSample(){
         try {
             BufferedReader reader = new BufferedReader (new FileReader ("src/main/resources/sampleStream.stream"));
             String line = reader.readLine ();

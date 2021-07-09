@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "general.kafka.mongo_consumers.size",
+      "type": "java.lang.String",
+      "description": "Description for general.kafka.mongo_consumers.size."
+  }
+] }

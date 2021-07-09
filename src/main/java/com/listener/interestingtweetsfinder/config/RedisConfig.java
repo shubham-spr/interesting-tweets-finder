@@ -9,8 +9,11 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 public class RedisConfig {
 
-    private static final int MAX_CONNECTIONS=64;
-    private static final int IDLE_CONNECTIONS=64;
+    @Value ("${general.redis.max_connections}")
+    private int max_connections=64;
+
+    @Value ("${general.redis.idle_connections}")
+    private int idle_connections=64;
 
     @Value ("${general.redis.host}")
     private String host;
@@ -21,8 +24,8 @@ public class RedisConfig {
     @Bean
     public JedisPool jedisPool(){
         JedisPoolConfig config = new JedisPoolConfig();
-        config.setMaxTotal(MAX_CONNECTIONS);
-        config.setMaxIdle(IDLE_CONNECTIONS);
+        config.setMaxTotal(max_connections);
+        config.setMaxIdle(idle_connections);
         return new JedisPool(config,host,port);
     }
 

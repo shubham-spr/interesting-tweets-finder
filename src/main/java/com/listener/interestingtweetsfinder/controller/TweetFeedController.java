@@ -1,15 +1,11 @@
 package com.listener.interestingtweetsfinder.controller;
 
-import com.listener.interestingtweetsfinder.model.Tweet;
 import com.listener.interestingtweetsfinder.repository.RedisFeedRepository;
 import com.listener.interestingtweetsfinder.repository.TweetRepository;
 import com.listener.interestingtweetsfinder.service.PatternMatchingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/api")
@@ -58,10 +54,10 @@ public class TweetFeedController {
         return "index";
     }
 
-    @GetMapping("tweet/{tweetId}")
-    public Tweet getTweet(@PathVariable String tweetId){
-        return tweetRepository.findTweetById (tweetId);
-    }
+//    @GetMapping("tweet/{tweetId}")
+//    public Tweet getTweet(@PathVariable String tweetId){
+//        return tweetRepository.findTweetById (tweetId);
+//    }
 
 }
 

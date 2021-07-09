@@ -3,6 +3,7 @@ package com.listener.interestingtweetsfinder.service;
 import com.listener.interestingtweetsfinder.PatternUpdateScheduler;
 import com.listener.interestingtweetsfinder.model.Regex;
 import com.listener.interestingtweetsfinder.repository.RegexRepository;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.regex.Pattern;
 
 /**
@@ -43,7 +41,9 @@ public class PatternMatchingService {
             else
                 regexPatternMap.put (regex.getId (),Pattern.compile (regex.getExpression (),Pattern.CASE_INSENSITIVE));
         }
-        scheduledExecutorService= Executors.newSingleThreadScheduledExecutor ();
+        scheduledExecutorService= Executors.newSingleThreadScheduledExecutor (
+                r -> new Thread (r,"PatternUpdScheduler")
+        );
         startUpdateScheduler ();
         logger.info ("Initially found "+regexPatternMap.size ()+" patterns! ");
     }

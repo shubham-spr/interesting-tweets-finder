@@ -38,3 +38,7 @@ out/
 
 ### Credentials ###
 src/main/resources/credentials.properties
+
+*.dump
+*.jfr
+

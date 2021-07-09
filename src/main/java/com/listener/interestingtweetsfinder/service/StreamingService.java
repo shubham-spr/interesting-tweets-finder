@@ -16,9 +16,10 @@ public class StreamingService {
 
     private static final Logger logger= LoggerFactory.getLogger (StreamingService.class);
 
-    private final ExecutorService executor= Executors.newSingleThreadExecutor ();
+    private final ExecutorService executor;
 
     public StreamingService(KafkaTweetProducer producer){
+        executor = Executors.newSingleThreadExecutor ( r -> new Thread (r,"TweetStreamingThread"));
         try {
             executor.execute (new TweetStreamerRunnable (producer));
         }catch (URISyntaxException e){

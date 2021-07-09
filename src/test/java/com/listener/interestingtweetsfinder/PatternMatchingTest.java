@@ -1,11 +1,13 @@
 package com.listener.interestingtweetsfinder;
 
 import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.regex.Pattern;
 
+@Disabled
 public class PatternMatchingTest {
 
     private final List<String> patterns = Lists.newArrayList (

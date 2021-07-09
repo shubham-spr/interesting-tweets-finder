@@ -1,5 +1,6 @@
 package com.listener.interestingtweetsfinder.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.data.annotation.Id;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Document (indexName = "tweets")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Tweet {
 
     @Id

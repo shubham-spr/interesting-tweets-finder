@@ -2,11 +2,13 @@ package com.listener.interestingtweetsfinder;
 
 import com.listener.interestingtweetsfinder.model.Regex;
 import com.listener.interestingtweetsfinder.repository.RegexRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
+@Disabled
 class InterestingTweetsFinderApplicationTests {
 
 	@Autowired

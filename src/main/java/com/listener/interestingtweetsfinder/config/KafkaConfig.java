@@ -1,6 +1,7 @@
 package com.listener.interestingtweetsfinder.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.admin.OffsetSpec;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -32,9 +33,9 @@ public class KafkaConfig {
     private String topic;
 
     @Bean
-    public NewTopic generalTopic() {
+    public NewTopic generalTopic(@Value ("${general.kafka.mongo_consumers.size}") int numConsumers) {
         return TopicBuilder.name(topic)
-                .partitions(5)
+                .partitions(numConsumers)
                 .replicas(1)
                 .build();
     }
@@ -59,6 +60,7 @@ public class KafkaConfig {
         configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, consumerAddress);
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        configProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,"earliest");
         return new DefaultKafkaConsumerFactory<> (configProps);
     }
 

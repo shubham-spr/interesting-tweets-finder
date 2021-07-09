@@ -46,7 +46,7 @@ public class PatternUpdateScheduler implements Runnable {
                 regexPatternMap.remove (regexId);
             }
         }
-        logger.info ("Patterns Updated! Current Patterns: "+regexPatternMap.size ());
+        logger.info ("Patterns Updated! Found : "+regexPatternMap.size ()+" Patterns");
     }
 
 }

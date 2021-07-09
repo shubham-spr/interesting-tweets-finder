@@ -12,7 +12,7 @@ a big, powerful, persistent, reliable and scalable distributed system with java 
 
 ![Architecture](src/main/resources/static/architecture.png)
 
-## Usage'
+## Usage
 
 <code>
 $ docker-compose up -d

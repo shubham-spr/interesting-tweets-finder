@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Document (indexName = "tweets")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -68,4 +69,26 @@ public class Tweet {
         return newMap;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass () != o.getClass ()) return false;
+        Tweet tweet = (Tweet) o;
+        return Objects.equals (id, tweet.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode () : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Tweet{" +
+                "id='" + id + '\'' +
+                ", conversationId='" + conversationId + '\'' +
+                ", referencedTweets=" + referencedTweets +
+                ", text='" + text + '\'' +
+                '}';
+    }
 }

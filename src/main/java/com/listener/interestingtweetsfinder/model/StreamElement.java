@@ -35,4 +35,10 @@ public class StreamElement {
         return streamElementOptional;
     }
 
+    @Override
+    public String toString() {
+        return "StreamElement{" +
+                "data=" + data +
+                '}';
+    }
 }

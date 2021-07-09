@@ -3,6 +3,8 @@ package com.listener.interestingtweetsfinder.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Objects;
+
 @Document
 public class Regex {
 
@@ -50,6 +52,19 @@ public class Regex {
                 ", expression='" + expression + '\'' +
                 ", caseSensitive=" + caseSensitive +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass () != o.getClass ()) return false;
+        Regex regex = (Regex) o;
+        return Objects.equals (id, regex.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode () : 0;
     }
 }
 

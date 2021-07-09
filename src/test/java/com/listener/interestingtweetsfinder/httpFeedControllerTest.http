@@ -17,3 +17,13 @@ GET http://localhost:8080/api/conversation/1413044789851791360
 Accept: application/json
 
 ###
+
+GET http://localhost:8080/api/conversation
+Accept: application/json
+
+###
+
+GET http://localhost:8080/api/reasons
+Accept: application/json
+
+###

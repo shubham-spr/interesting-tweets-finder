@@ -65,6 +65,7 @@ public class TweetStreamerRunnable implements Runnable {
     }
 
     public void run(){
+        // sampleStream ();
         while (true){
             try {
                 HttpResponse response = httpClient.execute (httpGet);
@@ -73,7 +74,8 @@ public class TweetStreamerRunnable implements Runnable {
                     BufferedReader reader = new BufferedReader (new InputStreamReader ((entity.getContent ())));
                     String line = reader.readLine ();
                     while (line != null) {
-                        producer.sendMessage (line);
+                        if (line.length()>0)
+                          producer.sendMessage (line);
                         line = reader.readLine ();
                         counter++;
                         if(counter%STATS_AFTER_NUM_TWEETS==0){
@@ -101,7 +103,8 @@ public class TweetStreamerRunnable implements Runnable {
             BufferedReader reader = new BufferedReader (new FileReader ("src/main/resources/sampleStream.stream"));
             String line = reader.readLine ();
             while (line != null) {
-                producer.sendMessage (line);
+                if(line.length ()>0)
+                    producer.sendMessage (line);
                 line = reader.readLine ();
             }
         }catch (IOException e){

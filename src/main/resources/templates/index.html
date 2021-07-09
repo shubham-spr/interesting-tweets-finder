@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:reasonAndTweets="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Interesting Tweets Finder</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        button{
+            width:15%;
+            display:inline-block;
+            margin-top:-15px;
+        }
+        h2{
+            display:inline-block;
+            width:68%;
+        }
+        .form-group{
+            width:100%;
+        }
+    </style>
+</head>
+<body>
+<div class="jumbotron text-center">
+    <h1>Interesting Tweets Finder</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="inline-block">
+            <h2>Tweet Conversation</h2>
+            <button id="conversation-button" type="button" class="btn btn-info btn-lg float-end" href="www.google.co.in">Fetch</button>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Conversation Id</span>
+            <input id="conversation-input" type="ConversationId" class="form-control" name="msg" placeholder="1413044789851791360">
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Tweet Id</th>
+                <th>Conversation Id</th>
+                <th>Tweet Text</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="tweet:${tweets}">
+                <td th:text="${tweet.id}"></td>
+                <td th:text="${tweet.conversationId}"></td>
+                <td th:text="${tweet.text}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="inline-block">
+            <h2>Get All Recent Interesting Tweets</h2>
+            <button id="all-interesting-tweets" type="button" class="btn btn-info btn-lg" href="www.google.co.in">Fetch</button>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <Th>Reason</Th>
+                <th>Tweet Id</th>
+                <th>Conversation Id</th>
+                <th>Tweet Text</th>
+            </tr>
+            </thead>
+            <tbody th:each="reasonAndTweets:${allInterestingTweets}">
+            <tr th:each="tweet:${reasonAndTweets.value}">
+                <td th:text="${reasonAndTweets.key}"></td>
+                <td th:text="${tweet.id}"></td>
+                <td th:text="${tweet.conversationId}"></td>
+                <td th:text="${tweet.text}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="inline-block">
+            <h2>Get Recent Interesting Tweets</h2>
+            <button id="reason-refresh" type="button" class="btn btn-info btn-lg" href="www.google.co.in">Refresh</button>
+            <button id="reason-tweets-fetch" type="button" class="btn btn-info btn-lg" href="www.google.co.in">Fetch</button>
+        </div>
+        <form>
+            <div class="form-group">
+                <label for="select-reason">Select Reason</label>
+                <select  class="form-control" id="select-reason">
+                    <option th:each="reason:${reasons}" th:text="${reason}" > 		</option>
+                </select>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Tweet Id</th>
+                        <th>Conversation Id</th>
+                        <th>Tweet Text</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="tweet:${tweetsForReason}">
+                        <td th:text="${tweet.id}"></td>
+                        <td th:text="${tweet.conversationId}"></td>
+                        <td th:text="${tweet.text}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    document.getElementById("conversation-button").onclick = function(){
+    	var convId =  document.getElementById("conversation-input").value;
+    	if(convId.length==0) convId="1413044789851791360";
+        location.href = "http://localhost:8080/api/conversation/"+convId;
+    };
+    document.getElementById("reason-refresh").onclick = function(){
+        location.href = "http://localhost:8080/api/reasons/";
+    };
+    document.getElementById("reason-tweets-fetch").onclick = function(){
+    	var reason =  document.getElementById("select-reason").value;
+        location.href = "http://localhost:8080/api/recent/"+reason+"?limit=10";
+    };
+    document.getElementById("all-interesting-tweets").onclick = function(){
+        location.href = "http://localhost:8080/api/recent?limit=10";
+    };
+</script>
+</body>
+</html>

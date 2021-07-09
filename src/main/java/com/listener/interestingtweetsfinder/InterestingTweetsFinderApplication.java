@@ -16,8 +16,4 @@ public class InterestingTweetsFinderApplication {
 		SpringApplication.run(InterestingTweetsFinderApplication.class, args);
 	}
 
-	public void addToRegex(RegexRepository regexRepository){
-
-	}
-
 }

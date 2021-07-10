@@ -5,6 +5,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
 
+/**
+ * A domain object describing the patterns stored in MongoDb
+ */
 @Document
 public class Regex {
 

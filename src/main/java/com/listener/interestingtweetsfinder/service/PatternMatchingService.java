@@ -20,16 +20,27 @@ import java.util.regex.Pattern;
  * A Service that will fetch the list of regex patterns from mongo repository
  * and match it against all the tweets consumed.
  *
- * For avoiding recompilation of pattern objects. A concurrent hashmap is used
- * which is updated after every few seconds (5 secs here) by a {@link PatternUpdateScheduler}
+ * To avoid fetching all the regex everytime for a match against each tweet, a concurrent hashmap
+ * is used which is updated after every fixed interval by a {@link PatternUpdateScheduler}
  */
 @Service
 public class PatternMatchingService {
 
     private static final Logger logger = LoggerFactory.getLogger (PatternMatchingService.class);
 
+    private static final int INITIAL_SCHEDULING_DELAY_SECS = 5;
+    private static final int FIXED_SCHEDULING_DELAY_SECS = 5;
+
+    /**
+     * A scheduling executor service for updating patterns
+     */
     private final ScheduledExecutorService scheduledExecutorService;
+
     private final RegexRepository regexRepository;
+
+    /**
+     * A map for storing all the compiled patterns
+     */
     private final Map<String, Pattern> regexPatternMap;
 
     public PatternMatchingService(RegexRepository regexRepository){
@@ -50,12 +61,18 @@ public class PatternMatchingService {
 
     private void startUpdateScheduler(){
         scheduledExecutorService.scheduleWithFixedDelay (new PatternUpdateScheduler (regexPatternMap,regexRepository),
-                5,
-                5,
+                INITIAL_SCHEDULING_DELAY_SECS,
+                FIXED_SCHEDULING_DELAY_SECS,
                 TimeUnit.SECONDS
         );
     }
 
+    /**
+     * Match the given text against all the regex stored
+     *
+     * @param text to match
+     * @return the list of regex-ids against which the text is a match
+     */
     public List<String> findMatchingRegexIdsForText(String text){
         List<String> matches = new ArrayList<> ();
         for(Map.Entry<String,Pattern> entry: regexPatternMap.entrySet ()){

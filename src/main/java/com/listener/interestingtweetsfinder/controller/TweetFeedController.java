@@ -24,6 +24,11 @@ public class TweetFeedController {
         this.patternMatchingService=patternMatchingService;
     }
 
+    /**
+     * Get the most recent interesting tweets for each regex-id
+     *
+     * @param limit the amount of tweets to get for each regex-id
+     */
     @GetMapping("recent")
     public String getRecentInterestingTweets(
             @RequestParam("limit") int limit,
@@ -32,6 +37,12 @@ public class TweetFeedController {
         return "index";
     }
 
+    /**
+     * Get the most recent interesting tweets for a single regex
+     *
+     * @param reason the regex id
+     * @param limit the amount of tweets to get for the corresponding regex
+     */
     @GetMapping("recent/{reason}")
     public String getRecentInterestingTweetsByReason(
             @PathVariable String reason,
@@ -42,22 +53,26 @@ public class TweetFeedController {
         return "index";
     }
 
+    /**
+     * Get all tweets belonging to a conversation
+     *
+     * @param convId the conversation id of the conversation
+     */
     @GetMapping("conversation/{convId}")
     public String getConversation(@PathVariable String convId, Model model){
         model.addAttribute ("tweets",tweetRepository.findTweetsByConversationId (convId));
         return "index";
     }
 
+    /**
+     * Get all the regex-ids registered for the pattern matching
+     */
     @GetMapping("reasons")
     public String getReasons(Model model){
         model.addAttribute ("reasons",patternMatchingService.getInterestingReasonIds ());
         return "index";
     }
 
-//    @GetMapping("tweet/{tweetId}")
-//    public Tweet getTweet(@PathVariable String tweetId){
-//        return tweetRepository.findTweetById (tweetId);
-//    }
 
 }
 

@@ -2,16 +2,17 @@ package com.listener.interestingtweetsfinder.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * A tweet domain object as the tweet data element of the streamed tweets
+ */
 @Document (indexName = "tweets")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Tweet {
@@ -22,6 +23,9 @@ public class Tweet {
     @JsonProperty("conversation_id")
     private String conversationId;
 
+    /**
+     * A list of parent tweets with reference type, to which this tweet is a reference ( a reply, quote or a retweet)
+     */
     @JsonProperty("referenced_tweets")
     private List<ReferencedTweet> referencedTweets;
 

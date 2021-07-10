@@ -1,6 +1,5 @@
 package com.listener.interestingtweetsfinder.service;
 
-import com.listener.interestingtweetsfinder.model.StreamElement;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

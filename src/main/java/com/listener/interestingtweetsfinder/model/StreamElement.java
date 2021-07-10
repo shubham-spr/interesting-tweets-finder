@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
+/**
+ * A domain object describing the unit of a tweet stream.
+ */
 public class StreamElement {
 
     private static final ObjectMapper mapper= new ObjectMapper ();

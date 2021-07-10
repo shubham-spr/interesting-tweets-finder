@@ -12,13 +12,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class StreamingService {
+public class TweetStreamingService {
 
-    private static final Logger logger= LoggerFactory.getLogger (StreamingService.class);
+    private static final Logger logger= LoggerFactory.getLogger (TweetStreamingService.class);
 
     private final ExecutorService executor;
 
-    public StreamingService(KafkaTweetProducer producer){
+    public TweetStreamingService(KafkaTweetProducer producer){
         executor = Executors.newSingleThreadExecutor ( r -> new Thread (r,"TweetStreamingThread"));
         try {
             executor.execute (new TweetStreamerRunnable (producer));
@@ -31,7 +31,7 @@ public class StreamingService {
     public void stop(){
         logger.info ("Shutting down executor service");
         try {
-            executor.awaitTermination (2, TimeUnit.SECONDS);
+            executor.awaitTermination (1, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             logger.warn ("Not able to wait for termination. Forcefully shutting down service!");
             e.printStackTrace ();

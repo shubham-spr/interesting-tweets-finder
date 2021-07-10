@@ -34,3 +34,5 @@ $ docker-compose up -d
 $ ./gradlew assemble  
 $ java -jar build/libs/interesting-tweets-finder-0.0.1-SNAPSHOT.jar -Xms256m -server
 ````
+
+4. Interact with the application at <a href="http://localhost:8080/api/index.html"> localhost:8080/api/index.html</a>

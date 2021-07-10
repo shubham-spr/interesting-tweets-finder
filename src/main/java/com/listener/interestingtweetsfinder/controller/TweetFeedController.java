@@ -24,6 +24,11 @@ public class TweetFeedController {
         this.patternMatchingService=patternMatchingService;
     }
 
+    @GetMapping("index.html")
+    public String greetings(){
+        return "index";
+    }
+
     /**
      * Get the most recent interesting tweets for each regex-id
      *
@@ -72,7 +77,6 @@ public class TweetFeedController {
         model.addAttribute ("reasons",patternMatchingService.getInterestingReasonIds ());
         return "index";
     }
-
 
 }
 

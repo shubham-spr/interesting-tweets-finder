@@ -47,10 +47,17 @@ public class PatternMatchingService {
         this.regexRepository=regexRepository;
         regexPatternMap=new ConcurrentHashMap<> ();
         for(Regex regex : regexRepository.findAll ()){
-            if(regex.getCaseSensitive ())
-                regexPatternMap.put (regex.getId (),Pattern.compile (regex.getExpression ()));
-            else
-                regexPatternMap.put (regex.getId (),Pattern.compile (regex.getExpression (),Pattern.CASE_INSENSITIVE));
+            if(regex.getCaseSensitive ()) {
+                regexPatternMap.computeIfAbsent (
+                        regex.getId (),
+                        k -> Pattern.compile (regex.getExpression ())
+                );
+            }else {
+                regexPatternMap.computeIfAbsent (
+                        regex.getId (),
+                        k -> Pattern.compile (regex.getExpression (), Pattern.CASE_INSENSITIVE)
+                );
+            }
         }
         scheduledExecutorService= Executors.newSingleThreadScheduledExecutor (
                 r -> new Thread (r,"PatternUpdScheduler")

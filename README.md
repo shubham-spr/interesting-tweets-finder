@@ -36,3 +36,12 @@ $ java -jar build/libs/interesting-tweets-finder-0.0.1-SNAPSHOT.jar -Xms256m -se
 ````
 
 4. Interact with the application at <a href="http://localhost:8080/api/index.html"> localhost:8080/api/index.html</a>
+
+### Links
+
+Tech doc: <a href="https://docs.google.com/document/d/1GP690mSLOaMDeYF-XkLzxOhd7aCV53vrT5RbOGHJTl8/edit?usp=sharing"> link </a>
+
+Presentation: <a href="https://1drv.ms/p/s!AobGxtMmAgz1ijosrPY5Br2K-DA-?e=KO2tO6"> link </a>
+
+
+

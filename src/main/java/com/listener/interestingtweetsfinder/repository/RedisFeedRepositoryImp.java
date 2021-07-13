@@ -25,7 +25,7 @@ public class RedisFeedRepositoryImp implements RedisFeedRepository {
     /**
      * Max size of a tweet stream
      */
-    private static final int MAX_STREAM_SIZE = 1000;
+    private static final int MAX_STREAM_SIZE = 10000;
 
     /**
      * The max number of milliseconds, a tweet must be stored to be counted as interesting

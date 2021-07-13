@@ -13,7 +13,6 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.*;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
-import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
@@ -77,9 +76,9 @@ public class KafkaConfig {
         RetryTemplate retryTemplate = new RetryTemplate ();
 
         ExponentialBackOffPolicy exponentialBackOffPolicy = new ExponentialBackOffPolicy ();
-        exponentialBackOffPolicy.setInitialInterval (2000);
+        exponentialBackOffPolicy.setInitialInterval (1000);
         exponentialBackOffPolicy.setMultiplier (2);
-        exponentialBackOffPolicy.setMaxInterval (20000);
+        exponentialBackOffPolicy.setMaxInterval (120000);
         retryTemplate.setBackOffPolicy (exponentialBackOffPolicy);
 
         SimpleRetryPolicy simpleRetryPolicy= new SimpleRetryPolicy ();

@@ -15,9 +15,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class KafkaTweetConsumer {
+public class KafkaTweetConsumers {
 
-    private static final Logger logger = LoggerFactory.getLogger (KafkaTweetConsumer.class);
+    private static final Logger logger = LoggerFactory.getLogger (KafkaTweetConsumers.class);
 
     /**
      * Log after the given number of tweets are consumed.
@@ -31,7 +31,7 @@ public class KafkaTweetConsumer {
     private final AtomicLong mongoConsumerCounter;
     private final AtomicLong redisConsumerCounter;
 
-    public KafkaTweetConsumer(
+    public KafkaTweetConsumers(
             RedisFeedRepositoryImp repository,
             PatternMatchingService patternMatchingService,
             TweetRepository tweetRepository){
@@ -60,6 +60,7 @@ public class KafkaTweetConsumer {
         Tweet tweet= element.getData ();
         List<String> reason = patternMatchingService.findMatchingRegexIdsForText (tweet.getText ());
         if(reason.size ()>0) {
+            // logger.info ("Adding for "+tweet+" : reasons: "+reason);
             redisFeedRepository.addInterestingTweet (tweet,reason);
             tweetRepository.save (tweet);
         }
@@ -74,7 +75,8 @@ public class KafkaTweetConsumer {
      * elasticsearch
      *
      * @param message the serialized tweet object in the stream.
-     */    @KafkaListener(
+     */
+    @KafkaListener(
             topics = "${general.kafka.topic}",
             concurrency = "${general.kafka.redis_consumers.size}",
             groupId = "${general.kafka.redis_consumers.group_id}")
@@ -84,7 +86,7 @@ public class KafkaTweetConsumer {
         StreamElement element = optional.get ();
         Tweet tweet= element.getData ();
         if(redisFeedRepository.isChildOfInteresting (tweet)){
-            logger.info (tweet.getText ()+ " has parent tweet interesting");
+            // logger.info (tweet.getText ()+ " has parent tweet interesting");
             tweetRepository.save (tweet);
         }
         if(redisConsumerCounter.incrementAndGet ()%STATS_AFTER_NUM_TWEETS==0){

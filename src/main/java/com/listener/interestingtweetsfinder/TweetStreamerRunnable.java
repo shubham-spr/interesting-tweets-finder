@@ -43,7 +43,7 @@ public class TweetStreamerRunnable implements Runnable {
     /**
      * The maximum delay interval for a request in backoff.
      */
-    private static final long MAX_INTERVAL = 20000;
+    private static final long MAX_INTERVAL = 120000;
     /**
      * The delay multiplier in the exponential backoff policy.
      */
@@ -97,15 +97,15 @@ public class TweetStreamerRunnable implements Runnable {
                     BufferedReader reader = new BufferedReader (new InputStreamReader ((entity.getContent ())));
                     String line = reader.readLine ();
                     while (line != null) {
-                        if (line.length()==0)
-                            continue;
-                        producer.sendMessage (line);
-                        line = reader.readLine ();
-                        counter++;
-                        if(counter%STATS_AFTER_NUM_TWEETS==0){
-                            logger.info ("Tweet Streamer  Fetched : "+counter+" Tweets");
+                        if (line.length()>0){
+                            producer.sendMessage (line);
+                            counter++;
+                            if(counter%STATS_AFTER_NUM_TWEETS==0){
+                                logger.info ("Tweet Streamer  Fetched : "+counter+" Tweets");
+                            }
+                            resetBackoff ();
                         }
-                        resetBackoff ();
+                        line = reader.readLine ();
                     }
                 }
             }catch (IOException e){
@@ -114,6 +114,7 @@ public class TweetStreamerRunnable implements Runnable {
                 e.printStackTrace ();
             }
             try {
+                logger.info ("Busy Waiting in Backoff");
                 Thread.sleep (currentWaitInterval);
             } catch (InterruptedException e) {
                 e.printStackTrace ();

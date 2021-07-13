@@ -30,7 +30,7 @@ public class PatternMatchingTest {
 
     @Test
     public void patternMatchTestForSprinklr(){
-        Pattern pattern = Pattern.compile (".*(#sprinklr|@Sprinklr|#sprinklrlife).*",Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile (".*(#sprinklr|@Sprinklr|#sprinklrlife)\\b.*",Pattern.CASE_INSENSITIVE);
         assert ( !pattern.matcher (patterns.get (0)).matches ()) ;
         assert ( pattern.matcher (patterns.get (3)).matches ()) ;
         assert ( pattern.matcher (patterns.get (4)).matches ()) ;

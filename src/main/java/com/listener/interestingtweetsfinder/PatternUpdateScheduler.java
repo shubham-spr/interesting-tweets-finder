@@ -36,7 +36,17 @@ public class PatternUpdateScheduler implements Runnable {
         Set<String> present = new HashSet<> ();
         // Add new ids
         for(final Regex regex:list) {
-            regexPatternMap.computeIfAbsent (regex.getId (),(key)-> Pattern.compile (regex.getExpression ()));
+            if(regex.getCaseSensitive ()){
+                regexPatternMap.computeIfAbsent (
+                        regex.getId (),
+                        (key)-> Pattern.compile (regex.getExpression (),Pattern.CASE_INSENSITIVE)
+                );
+            }else{
+                regexPatternMap.computeIfAbsent (
+                        regex.getId (),
+                        (key)-> Pattern.compile (regex.getExpression ())
+                );
+            }
             present.add (regex.getId ());
         }
         // Remove the deleted ids

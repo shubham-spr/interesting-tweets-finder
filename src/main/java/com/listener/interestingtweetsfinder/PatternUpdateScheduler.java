@@ -39,12 +39,12 @@ public class PatternUpdateScheduler implements Runnable {
             if(regex.getCaseSensitive ()){
                 regexPatternMap.computeIfAbsent (
                         regex.getId (),
-                        (key)-> Pattern.compile (regex.getExpression (),Pattern.CASE_INSENSITIVE)
+                        (key)-> Pattern.compile (regex.getExpression ())
                 );
             }else{
                 regexPatternMap.computeIfAbsent (
                         regex.getId (),
-                        (key)-> Pattern.compile (regex.getExpression ())
+                        (key)-> Pattern.compile (regex.getExpression (),Pattern.CASE_INSENSITIVE)
                 );
             }
             present.add (regex.getId ());
